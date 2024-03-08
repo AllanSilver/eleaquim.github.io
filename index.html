@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avengers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card" data-name="Thor" onclick="chooseCard('Thor', 10, 8, 7)">
+            <div class="content">
+                <img src="pngegg (1).png" alt="Thor">
+                <p>Thor</p>
+                <p>Força: 10 | Agilidade: 8 | Inteligência: 7</p>
+            </div>
+        </div>
+
+        <div class="card" data-name="Iron Man" onclick="chooseCard('Iron Man', 9, 9, 9)">
+            <div class="content">
+                <img src="pngegg (2).png" alt="Iron Man">
+                <p>Iron Man</p>
+                <p>Força: 9 | Agilidade: 9 | Inteligência: 9</p>
+            </div>
+        </div>
+
+        <div class="card" data-name="Captain America" onclick="chooseCard('Captain America', 8, 9, 8)">
+            <div class="content">
+                <img src="pngegg (3).png" alt="Captain America">
+                <p>Capitain America</p>
+                <p>Força: 8 | Agilidade: 9 | Inteligência: 8</p>
+            </div>
+        </div>
+
+        <div class="card" data-name="Hulk" onclick="chooseCard('Hulk', 10, 7, 5)">
+            <div class="content">
+                <img src="pngimg.com - hulk_PNG85.png" alt="Hulk">
+                <p>Hulk</p>
+                <p>Força: 10 | Agilidade: 7 | Inteligência: 5</p>
+            </div>
+        </div>
+
+        <div class="card" data-name="Wolverine" onclick="chooseCard('Wolverine', 8, 9, 7)">
+            <div class="content">
+                <img src="wolverine.png" alt="Wolverine">
+                <p>Wolverine</p>
+                <p>Força: 8 | Agilidade: 9 | Inteligência: 7</p>
+            </div>
+        </div>
+
+        <div class="card" data-name="Black Panther" onclick="chooseCard('Black Panther', 10, 7, 9)">
+            <div class="content">
+                <img src="BlackPhanter.png" alt="Black Panther">
+                <p>Black Panther</p>
+                <p>Força: 10 | Agilidade: 7 | Inteligência: 9</p>
+            </div>
+        </div>
+
+    </div>
+
+    <button onclick="play()">Iniciar Jogo</button>
+    <audio id="selected-sound" src="bereal.mp3"></audio>
+    <audio id="button-click-sound" src="coin_3.mp3"></audio>
+
+    <div id="result"></div>
+
+    <script type="text/javascript" src="vanilla-tilt.js"></script>
+    <script>
+        VanillaTilt.init(document.querySelectorAll(".card"), {
+            max: 25,
+            speed: 400,
+            glare: true,
+            "max-glare": 1,
+        });
+
+        let playerCard;
+        let computerCard;
+
+        function chooseCard(name, forca, agilidade, inteligencia) {
+    const selectedCard = document.querySelector(`.card[data-name="${name}"]`);
+
+    if (selectedCard.classList.contains('selected')) {
+        // Se o card já estiver selecionado, desselecione-o
+        selectedCard.classList.remove('selected');
+        selectedCard.querySelector('.content img').classList.remove('fixed');
+        playerCard = null; // Reseta a escolha do jogador
+    } else {
+        // Caso contrário, selecione o card
+        playerCard = { name, forca, agilidade, inteligencia };
+        document.querySelectorAll('.card').forEach(card => {
+            card.classList.remove('selected');
+            card.querySelector('.content img').classList.remove('fixed');
+        });
+        selectedCard.classList.add('selected');
+        selectedCard.querySelector('.content img').classList.add('fixed');
+        document.getElementById('selected-sound').play();
+    }
+}
+
+        const cards = [
+            { name: 'Thor', forca: 10, agilidade: 8, inteligencia: 7 },
+            { name: 'Iron Man', forca: 9, agilidade: 9, inteligencia: 9 },
+            { name: 'Captain America', forca: 8, agilidade: 9, inteligencia: 8 },
+            { name: 'Hulk', forca: 10, agilidade: 7, inteligencia: 5 },
+            { name: 'Wolverine', forca: 8, agilidade: 9, inteligencia: 7 },
+            { name: 'Black Panther', forca: 10, agilidade: 7, inteligencia: 9 }
+            // Restante dos cards aqui
+        ];
+
+        function play() {
+    if (!playerCard) {
+        alert("Escolha um personagem primeiro.");
+        return;
+    }
+    document.getElementById('button-click-sound').play(); 
+    computerCard = cards[Math.floor(Math.random() * cards.length)];
+
+    let playerTotal = playerCard.forca + playerCard.agilidade + playerCard.inteligencia;
+    let computerTotal = computerCard.forca + computerCard.agilidade + computerCard.inteligencia;
+
+    let result = '';
+    if (playerTotal > computerTotal) {
+        result = 'Você venceu!';
+    } else if (playerTotal < computerTotal) {
+        result = 'Você perdeu!';
+    } else {
+        result = 'Empate!';
+    }
+
+    alert(`${playerCard.name}: ${playerTotal} pontos\n${computerCard.name}: ${computerTotal} pontos\n\n${result}`);
+}
+
+    </script>
+</body>
+<footer>
+    <audio class="audio" src="19.mp3" autoplay></audio>
+</footer>
+</html>
